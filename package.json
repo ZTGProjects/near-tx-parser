@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/ZTGProjects/near-tx-parser/issues"
   },
-  "homepage": "https://github.com/ZTGProjects/near-tx-parser#readme"
+  "homepage": "https://github.com/ZTGProjects/near-tx-parser#readme",
+  "dependencies": {
+    "dotenv": "^16.0.0"
+  }
 }

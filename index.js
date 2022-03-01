@@ -1,3 +1,6 @@
+const dotenv = require('dotenv');
+dotenv.config();
+
 /**
  * TXParser: a simple parser to return TX Actions in a more readeable form to be used for logging
  * Return object will be an array and can have multiple Actions in a readable form
@@ -17,6 +20,14 @@ class TXParser {
 	 * @returns 
 	 */
 	async getReadableTx(res) {
+		
+		if(process.env['NEAR_USE_TX_PARSER'] == 'RAW'){
+			return res;
+		}
+		if(process.env['NEAR_USE_TX_PARSER'] == 'NONE'){
+			return "";
+		}
+
 		this.parseAction(res);
 		this.setActionType();
 		this.prepareReadable();
