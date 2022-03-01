@@ -1,0 +1,19 @@
+{
+  "name": "near-tx-parser",
+  "version": "1.0.0",
+  "description": "A simple parser to return friendly response out of NEAR RPC or NEAR JSON response. Remove this package will fallback to original RPC response",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZTGProjects/near-tx-parser.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ZTGProjects/near-tx-parser/issues"
+  },
+  "homepage": "https://github.com/ZTGProjects/near-tx-parser#readme"
+}
