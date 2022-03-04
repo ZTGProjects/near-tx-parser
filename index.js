@@ -19,25 +19,48 @@ class TXParser {
 	 * @param {*} res 
 	 * @returns 
 	 */
-	async getReadableTx(res) {
-		
+	async parse(res) {
+
 		if(process.env['NEAR_USE_TX_PARSER'] == 'RAW'){
-			return res;
+			console.log(res);
+			return;
+		}
+		if(process.env['NEAR_USE_TX_PARSER'] == 'FRIENDLY'){
+			if(typeof res.data != 'undefined'){
+				console.log(res.data);
+			}
+			else{
+				console.log(res);
+			}
+			return;
 		}
 		if(process.env['NEAR_USE_TX_PARSER'] == 'NONE'){
-			return "";
+			return;
 		}
+		if(typeof res.transaction != 'undefined'){
+			this.parseAction(res);
+			this.setActionType();
+			this.prepareReadable();
+			if (!this.error) {
+				return this.action_stack;
+			}
+			else {
+				return this.msg;
+			}
+		}
+		if(typeof res.data != 'undefined'){
+			this.action_stack.push({'readable':res.data});
+		}
+		if(typeof res.transaction == 'undefined'){
+//			this.action_stack.push({'readable':res});
+		}
+		this.action_stack.forEach(function(i,v){
+			console.log(i.readable);
+		});
 
-		this.parseAction(res);
-		this.setActionType();
-		this.prepareReadable();
-		if (!this.error) {
-			return this.action_stack;
-		}
-		else {
-			return this.msg;
-		}
 	}
+
+	
 
 	/**
 	 * 
