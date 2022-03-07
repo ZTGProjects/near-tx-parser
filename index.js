@@ -13,54 +13,58 @@ class TXParser {
 	msg = "";
 	FACTOR = 1000000000000000000000000;
 
-
 	/**
 	 * 
 	 * @param {*} res 
 	 * @returns 
 	 */
-	async parse(res) {
+	async parse(res, type = "") {
 
-		if(process.env['NEAR_USE_TX_PARSER'] == 'RAW'){
-			console.log(res);
+		if (type != '') {
+			if (type == 'create-account') {
+				console.log('Account '+res.accountId+' for network "'+res.networkId+'" was created.');
+				return;
+			}
+		}
+		else {
+			if (typeof res.data == 'undefined' && typeof res.transaction == 'undefined' && typeof res) {
+				try {
+					let str = JSON.stringify(res);
+					let check_json = JSON.parse(str);
+					console.log(res);
+				}
+				catch (e) {
+					console.log("Unknown error thrown");
+				}
+			}
+			if (process.env['NEAR_USE_TX_PARSER'] == 'NONE') {
+				console.log("None");
+				return;
+			}
+			if (process.env['NEAR_USE_TX_PARSER'] == 'RAW') {
+				console.log("raw");
+				return;
+			}
+
+			// below will work for both FRIEND and STRACK_TRACE
+			// note that STACK_TRACE, if no error, will also come here
+			if (typeof res.data != 'undefined') {
+				this.action_stack.push({ 'readable': res.data });
+			}
+			if (typeof res.transaction != 'undefined') {
+				this.parseAction(res);
+				this.setActionType();
+				this.prepareReadable();
+			}
+			this.action_stack.forEach(function (i, v) {
+				console.log(i.readable);
+			});
 			return;
 		}
-		if(process.env['NEAR_USE_TX_PARSER'] == 'FRIENDLY'){
-			if(typeof res.data != 'undefined'){
-				console.log(res.data);
-			}
-			else{
-				console.log(res);
-			}
-			return;
-		}
-		if(process.env['NEAR_USE_TX_PARSER'] == 'NONE'){
-			return;
-		}
-		if(typeof res.transaction != 'undefined'){
-			this.parseAction(res);
-			this.setActionType();
-			this.prepareReadable();
-			if (!this.error) {
-				return this.action_stack;
-			}
-			else {
-				return this.msg;
-			}
-		}
-		if(typeof res.data != 'undefined'){
-			this.action_stack.push({'readable':res.data});
-		}
-		if(typeof res.transaction == 'undefined'){
-//			this.action_stack.push({'readable':res});
-		}
-		this.action_stack.forEach(function(i,v){
-			console.log(i.readable);
-		});
 
 	}
 
-	
+
 
 	/**
 	 * 
