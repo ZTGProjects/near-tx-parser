@@ -8,6 +8,7 @@ Note that work is in progress and these should be non breaking changes for near-
 - requires - ```near-api-js```  branch ```parse-tx-readable-string```
 - requires - ```near-cli``` branch ```with-tx-parser```
 
+
 ## ENV
 NEAR_USE_TX_PARSER=RAW | STACK_TRACE (default) | FRIENDLY | NONE
 
